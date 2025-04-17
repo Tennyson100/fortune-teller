@@ -1,17 +1,21 @@
-name: Release Fortune Teller
+name: release
 
 on:
   push:
     tags:
-      - 'v*'  # Triggers on tags like v1.0, v1.1, etc.
+      - 'v*'
+
+permissions:
+  contents: write  # Add this line to fix the 403 issue
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
